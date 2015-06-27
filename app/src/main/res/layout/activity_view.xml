@@ -37,7 +37,6 @@
         android:gravity="center|fill_horizontal|center_horizontal"
         android:textAlignment="gravity"
         android:typeface="serif"
-        android:id="@+id/"
         android:singleLine="false"
         android:fontFamily="@string/abc_searchview_description_voice" />
 
