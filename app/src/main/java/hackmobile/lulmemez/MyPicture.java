@@ -9,10 +9,11 @@ public class MyPicture {
     static MyPicture obj = null;
 
     // Picture from camera
-    Object my_picture = null;
+    public Object my_picture = null;
+    public Coordinates coords = null;
 
     // Get reference to singleton instance
-    static MyPicture get() {
+    public static MyPicture get() {
         if (obj == null) {
             return new MyPicture();
         }
