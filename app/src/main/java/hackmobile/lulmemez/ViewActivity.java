@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import android.graphics.Bitmap;
@@ -36,7 +37,7 @@ import android.content.Context;
 
 public class ViewActivity extends ActionBarActivity {
 
-    public Bitmap blunt, guy, doritos, glasses, hat, loominati, SnoopDogg, swag, weed, yolo, image;
+    public Bitmap blunt, guy, doritos, glasses, hat, loominati, SnoopDogg, swag, weed, yolo, image, mutableImage;
 
     ImageView pictureView = null;
     TextView loadText = null;
@@ -67,6 +68,11 @@ public class ViewActivity extends ActionBarActivity {
         try {
             istr0 = assetManager.open("blunt.png");
             blunt = BitmapFactory.decodeStream(istr0);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(-90);
+            blunt = Bitmap.createBitmap(blunt , 0, 0, blunt.getWidth(), blunt.getHeight(), matrix, true);
+            blunt = Bitmap.createScaledBitmap(blunt, blunt.getWidth()/2, blunt.getHeight()/2 , true);
+
 
             istr1 = assetManager.open("DO_NOT_WANT_GUY.png");
             guy = BitmapFactory.decodeStream(istr1);
@@ -98,14 +104,6 @@ public class ViewActivity extends ActionBarActivity {
             istr10 = assetManager.open("BillNye.png");
             image = BitmapFactory.decodeStream(istr10);
 
-            int EYEDISTANCE = image.getWidth()/3;
-            Bitmap resizedWeed = Bitmap.createScaledBitmap(weed, EYEDISTANCE, image.getHeight()*EYEDISTANCE/weed.getHeight(), true);
-
-            Bitmap mutableImage = image.copy(Bitmap.Config.ARGB_8888, true);
-
-            Canvas canvas = new Canvas(mutableImage);
-            Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
-            canvas.drawBitmap(resizedWeed, 0, 0, paint);
 
 
         } catch (IOException e) {
@@ -155,13 +153,57 @@ public class ViewActivity extends ActionBarActivity {
         Bitmap modifiedImage = null;
 //        try {
         MyPicture mine = MyPicture.get();
-            modifiedImage = MyPicture.get().my_picture; //BitmapFactory.decodeStream(getAssets().open("blunt.png"));
+        modifiedImage = MyPicture.get().my_picture; //BitmapFactory.decodeStream(getAssets().open("blunt.png"));
+
+        Coordinates coords = MyPicture.get().coords;;
+
+        int EYEDISTANCE = coords.rightEye[0] - coords.leftEye[0];
+
+        mutableImage = modifiedImage.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(mutableImage);
+        Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+
+        if(EYEDISTANCE != 0 ) {
+            Bitmap resizedGlasses = Bitmap.createScaledBitmap(glasses, EYEDISTANCE, image.getHeight() * EYEDISTANCE / glasses.getHeight(), true);
+            canvas.drawBitmap(resizedGlasses, coords.rightEye[0], coords.rightEye[1], paint);
+        }
+
+        if(coords.mouth[0] == 0)
+        {
+            Log.d("face detection", "mouth not detected!!!");
+            System.out.println("mouth not detected!!!");
+        }
+
+        if(coords.mouth[0] !=0 && coords.mouth[1] !=0 ) {
+            canvas.drawBitmap(blunt, coords.mouth[0], coords.mouth[1], paint);
+        }
+
+
+        if (coords.upperLeft[0] != 0 || coords.upperLeft[1] != 0)
+        {
+            Log.d("face detection", "face detected!!! lowerRight[0] coordinates is: " + coords.lowerRight[0]);
+            Log.d("face detection", "face detected!!! lowerRight[1] coordinates is: " + coords.lowerRight[1]);
+            Log.d("face detection", "face detected!!! upperLeft[0] coordinates is: " + coords.upperLeft[0]);
+            Log.d("face detection", "face detected!!! upperLeft[1] coordinates is: " + coords.upperLeft[1]);
+
+            canvas.drawBitmap(blunt, -1*(coords.upperLeft[1] + coords.lowerRight[1])/2 + 400 - (coords.upperLeft[1] + coords.lowerRight[1])/3 , (coords.upperLeft[1] + coords.lowerRight[1])/2 + 300 + (coords.upperLeft[1] + coords.lowerRight[1])/3, paint);
+        }
+
+
+        if (coords.lowerRight[0] == 0 || coords.lowerRight[1] == 0)
+        {
+            Log.d("face detection", "face not detected!!!");
+        }
+
+
 
 //        }
 //        catch (IOException e){
 //        }
         // Hide loading message
         hideLoading();
+
+        modifiedImage = mutableImage;
         // Display modified image
         displayImage(modifiedImage);
 

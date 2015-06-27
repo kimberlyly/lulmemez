@@ -31,9 +31,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-
-
-
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);

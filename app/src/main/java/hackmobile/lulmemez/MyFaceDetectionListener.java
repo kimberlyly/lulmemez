@@ -1,6 +1,7 @@
 package hackmobile.lulmemez;
 
 import android.hardware.Camera;
+import android.util.Log;
 
 /**
  * Created by kimberlyly on 6/27/15.
@@ -35,6 +36,8 @@ class MyFaceDetectionListener implements Camera.FaceDetectionListener {
 
 
             MyPicture.get().coords = coord;
+
+
         }
     }
 }
