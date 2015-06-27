@@ -1,16 +1,26 @@
 package hackmobile.lulmemez;
 
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.content.res.AssetManager;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +31,13 @@ import android.content.Context;
 public class ViewActivity extends ActionBarActivity {
 
     public Bitmap blunt, guy, doritos, glasses, hat, loominati, SnoopDogg, swag, weed, yolo, image;
+
+    ImageView pictureView = null;
+    TextView loadText = null;
+    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+    RelativeLayout rl = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +127,35 @@ public class ViewActivity extends ActionBarActivity {
             }
         }
 
+
+
+
+
+
+
+        // Start our code
+
+        // Instantiate UI
+        pictureView  = new ImageView(getApplicationContext());
+        loadText = new TextView(getApplicationContext());
+        rl = (RelativeLayout) findViewById(R.id.relativeLayout1);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        displayLoading("Loading...");
+        // Get image
+        MyPicture myPicture = MyPicture.get();
+        // Make modify image (kevin)
+
+        Bitmap modifiedImage = null;
+        try {
+            modifiedImage = BitmapFactory.decodeStream(getAssets().open("blunt.png"));
+        }
+        catch (IOException e){
+        }
+        // Hide loading message
+        hideLoading();
+        // Display modified image
+        displayImage(modifiedImage);
+
     }
 
     @Override
@@ -133,4 +179,27 @@ public class ViewActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void displayImage(Bitmap b){
+        pictureView.setImageBitmap(b);
+        rl.addView(pictureView, lp);
+    }
+
+    void hideImage(){
+        //pictureView.setVisibility(View.INVISIBLE);
+        rl.removeView(pictureView);
+    }
+
+    void displayLoading(String s) {
+        loadText.setText(s);
+        loadText.setTextColor(Color.BLACK);
+        loadText.setTextSize(40);
+        loadText.setLayoutParams(lp);
+        rl.addView(loadText, lp);
+    }
+
+    void hideLoading(){
+        rl.removeView(loadText);
+    }
+
 }
