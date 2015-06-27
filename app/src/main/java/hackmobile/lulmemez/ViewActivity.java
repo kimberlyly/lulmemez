@@ -70,8 +70,8 @@ public class ViewActivity extends ActionBarActivity {
             blunt = BitmapFactory.decodeStream(istr0);
             Matrix matrix = new Matrix();
             matrix.postRotate(-90);
-            blunt = Bitmap.createBitmap(blunt , 0, 0, blunt.getWidth(), blunt.getHeight(), matrix, true);
-            blunt = Bitmap.createScaledBitmap(blunt, blunt.getWidth()/2, blunt.getHeight()/2 , true);
+            blunt = Bitmap.createBitmap(blunt, 0, 0, blunt.getWidth(), blunt.getHeight(), matrix, true);
+            blunt = Bitmap.createScaledBitmap(blunt, blunt.getWidth() / 2, blunt.getHeight() / 2, true);
 
 
             istr1 = assetManager.open("DO_NOT_WANT_GUY.png");
@@ -82,9 +82,17 @@ public class ViewActivity extends ActionBarActivity {
 
             istr3 = assetManager.open("glasses.png");
             glasses = BitmapFactory.decodeStream(istr3);
+            matrix = new Matrix();
+            matrix.postRotate(-90);
+            glasses = Bitmap.createBitmap(glasses, 0, 0, glasses.getWidth(), glasses.getHeight(), matrix, true);
+            glasses = Bitmap.createScaledBitmap(glasses, glasses.getWidth() / 4, glasses.getHeight() / 4, true);
 
             istr4 = assetManager.open("hat.png");
             hat = BitmapFactory.decodeStream(istr4);
+            matrix = new Matrix();
+            matrix.postRotate(-90);
+            hat = Bitmap.createBitmap(hat, 0, 0, hat.getWidth(), hat.getHeight(), matrix, true);
+            hat = Bitmap.createScaledBitmap(hat, hat.getWidth()/2 , hat.getHeight()/2, true);
 
             istr5 = assetManager.open("loominati.png");
             loominati = BitmapFactory.decodeStream(istr5);
@@ -179,14 +187,18 @@ public class ViewActivity extends ActionBarActivity {
         }
 
 
-        if (coords.upperLeft[0] != 0 || coords.upperLeft[1] != 0)
-        {
+        if (coords.upperLeft[0] != 0 || coords.upperLeft[1] != 0) {
             Log.d("face detection", "face detected!!! lowerRight[0] coordinates is: " + coords.lowerRight[0]);
             Log.d("face detection", "face detected!!! lowerRight[1] coordinates is: " + coords.lowerRight[1]);
             Log.d("face detection", "face detected!!! upperLeft[0] coordinates is: " + coords.upperLeft[0]);
             Log.d("face detection", "face detected!!! upperLeft[1] coordinates is: " + coords.upperLeft[1]);
+            Log.d("face detection", "face detected!!! mouth[0]] coordinates is: " + coords.mouth[0]);
+            Log.d("face detection", "face detected!!! mouth[1] coordinates is: " + coords.mouth[1]);
 
-            canvas.drawBitmap(blunt, -1*(coords.upperLeft[1] + coords.lowerRight[1])/2 + 400 - (coords.upperLeft[1] + coords.lowerRight[1])/3 , (coords.upperLeft[1] + coords.lowerRight[1])/2 + 300 + (coords.upperLeft[1] + coords.lowerRight[1])/3, paint);
+            canvas.drawBitmap(blunt, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 550 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2 + 150, paint);
+            canvas.drawBitmap(glasses, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 350 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2, paint);
+            canvas.drawBitmap(hat, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 100 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2, paint);
+
         }
 
 
