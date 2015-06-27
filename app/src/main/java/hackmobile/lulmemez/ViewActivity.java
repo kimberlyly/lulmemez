@@ -1,73 +1,115 @@
 package hackmobile.lulmemez;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import android.content.Context;
 
 public class ViewActivity extends ActionBarActivity {
 
-    public Bitmap blunt, guy, doritos, glasses, hat, loominati, SnoopDogg, swag, weed, yolo;
+    public Bitmap blunt, guy, doritos, glasses, hat, loominati, SnoopDogg, swag, weed, yolo, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        loadImages();
     }
 
     //Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.image);
 
     public void loadImages()
     {
-        InputStream istr0, istr1, istr2, istr3, istr4, istr5, istr6, istr7, istr8, istr9;
-        Bitmap bitmap = null;
-        AssetManager assetManager;
+        InputStream istr0, istr1, istr2, istr3, istr4, istr5, istr6, istr7, istr8, istr9, istr10;
 
+        AssetManager assetManager;
 
         assetManager = getAssets();
         try {
-            istr0 = assetManager.open("assets/blunt.png");
+            istr0 = assetManager.open("blunt.png");
             blunt = BitmapFactory.decodeStream(istr0);
 
-            istr1 = assetManager.open("assets/DO_NOT_WANT_GUY.png");
+            istr1 = assetManager.open("DO_NOT_WANT_GUY.png");
             guy = BitmapFactory.decodeStream(istr1);
 
-            istr2 = assetManager.open("assets/doritos.png");
+            istr2 = assetManager.open("doritos.png");
             doritos = BitmapFactory.decodeStream(istr2);
 
-            istr3 = assetManager.open("assets/glasses.png");
+            istr3 = assetManager.open("glasses.png");
             glasses = BitmapFactory.decodeStream(istr3);
 
-            istr4 = assetManager.open("assets/hat.png");
+            istr4 = assetManager.open("hat.png");
             hat = BitmapFactory.decodeStream(istr4);
 
-            istr5 = assetManager.open("assets/loominati.png");
+            istr5 = assetManager.open("loominati.png");
             loominati = BitmapFactory.decodeStream(istr5);
 
-            istr6 = assetManager.open("assets/SnoopDog.png");
+            istr6 = assetManager.open("SnoopDogg.png");
             SnoopDogg = BitmapFactory.decodeStream(istr6);
 
-            istr7 = assetManager.open("assets/swag.png");
+            istr7 = assetManager.open("swag.png");
             swag = BitmapFactory.decodeStream(istr7);
 
-            istr8 = assetManager.open("assets/weed.png");
+            istr8 = assetManager.open("weed.png");
             weed = BitmapFactory.decodeStream(istr8);
 
-            istr9 = assetManager.open("assets/yolo.png");
+            istr9 = assetManager.open("yolo.png");
             yolo = BitmapFactory.decodeStream(istr9);
 
+            istr10 = assetManager.open("BillNye.png");
+            image = BitmapFactory.decodeStream(istr10);
+
+            int EYEDISTANCE = image.getWidth()/3;
+            Bitmap resizedWeed = Bitmap.createScaledBitmap(weed, EYEDISTANCE, image.getHeight()*EYEDISTANCE/weed.getHeight(), true);
+
+            Bitmap mutableImage = image.copy(Bitmap.Config.ARGB_8888, true);
+
+            Canvas canvas = new Canvas(mutableImage);
+            Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+            canvas.drawBitmap(resizedWeed, 0, 0, paint);
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        FileOutputStream out = null;
+        try {
+            File file = new File(this.getFilesDir(), "test.png");
+
+            out = openFileOutput("test.png", Context.MODE_PRIVATE);
+
+            image.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored'
+
+            out.close();
+            Log.d("DEBUG", "written");
+            Log.d("files dir", "" + this.getFilesDir());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import hackmobile.lulmemez.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -113,6 +114,11 @@ public class CameraActivity extends Activity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+
+        Intent intent = new Intent(this, ViewActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
