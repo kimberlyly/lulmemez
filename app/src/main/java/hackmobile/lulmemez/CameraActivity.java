@@ -1,27 +1,85 @@
 package hackmobile.lulmemez;
 
-import hackmobile.lulmemez.util.SystemUiHider;
-
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
+import android.graphics.PixelFormat;
+import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 
+import java.io.IOException;
+import java.util.List;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- *
- * @see SystemUiHider
- */
-public class CameraActivity extends Activity {
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+public class CameraActivity extends Activity implements SurfaceHolder.Callback {
+
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mSurfaceHolder;
+    private Camera mCamera;
+    private boolean mPreviewRunning;
+    private Coordinates coord;
+
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_camera);
+
+        mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
+
+
+        mSurfaceHolder = mSurfaceView.getHolder();
+
+        mSurfaceHolder.addCallback(this);
+
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        mCamera = Camera.open();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        if (mPreviewRunning) {
+
+            mCamera.stopPreview();
+        }
+        Camera.Parameters p = mCamera.getParameters();
+        p.setPreviewSize(w, h);
+        List<Camera.Size> previewSizes = p.getSupportedPreviewSizes();
+
+        Camera.Size previewSize = previewSizes.get(0);
+        p.setPreviewSize(previewSize.width, previewSize.height);
+        mCamera.setParameters(p);
+        try {
+            mCamera.setPreviewDisplay(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mCamera.startPreview();
+        MyFaceDetectionListener faceListener = new MyFaceDetectionListener();
+        mCamera.setFaceDetectionListener(faceListener);
+        mCamera.startFaceDetection();
+        mPreviewRunning = true;
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        mCamera.stopPreview();
+        mPreviewRunning = false;
+        mCamera.release();
+
     }
 }
