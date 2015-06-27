@@ -30,7 +30,7 @@ public class CameraView extends Activity implements SurfaceHolder.Callback {
 
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.camera_surface);
+        setContentView(R.layout.activity_camera);
 
         mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
 
