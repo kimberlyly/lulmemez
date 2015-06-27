@@ -66,6 +66,7 @@ public class CameraView extends Activity implements SurfaceHolder.Callback {
 
         mCamera.startPreview();
         MyFaceDetectionListener faceListener = new MyFaceDetectionListener();
+
         mCamera.setFaceDetectionListener(faceListener);
         mCamera.startFaceDetection();
         mPreviewRunning = true;

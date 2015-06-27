@@ -53,7 +53,7 @@ public class ViewActivity extends ActionBarActivity {
         InputStream istr0, istr1, istr2, istr3, istr4, istr5, istr6, istr7, istr8, istr9, istr10;
 
         AssetManager assetManager;
-
+        Bitmap mutableImage = null;
         assetManager = getAssets();
         try {
             istr0 = assetManager.open("blunt.png");
@@ -92,7 +92,7 @@ public class ViewActivity extends ActionBarActivity {
             int EYEDISTANCE = image.getWidth()/3;
             Bitmap resizedWeed = Bitmap.createScaledBitmap(weed, EYEDISTANCE, image.getHeight()*EYEDISTANCE/weed.getHeight(), true);
 
-            Bitmap mutableImage = image.copy(Bitmap.Config.ARGB_8888, true);
+            mutableImage = image.copy(Bitmap.Config.ARGB_8888, true);
 
             Canvas canvas = new Canvas(mutableImage);
             Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
@@ -151,6 +151,8 @@ public class ViewActivity extends ActionBarActivity {
         }
         catch (IOException e){
         }
+
+        modifiedImage = mutableImage;
         // Hide loading message
         hideLoading();
         // Display modified image
