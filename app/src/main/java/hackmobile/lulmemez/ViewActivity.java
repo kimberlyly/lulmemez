@@ -13,12 +13,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.content.res.AssetManager;
 
+import android.graphics.PixelFormat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,14 +40,17 @@ public class ViewActivity extends ActionBarActivity {
 
     ImageView pictureView = null;
     TextView loadText = null;
-    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
-    RelativeLayout rl = null;
+    LinearLayout rl = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_view);
         loadImages();
     }
@@ -132,25 +141,25 @@ public class ViewActivity extends ActionBarActivity {
 
 
 
-
         // Start our code
 
         // Instantiate UI
-        pictureView  = new ImageView(getApplicationContext());
+        pictureView  = (ImageView) findViewById(R.id.imageview1); //new ImageView(getApplicationContext());
         loadText = new TextView(getApplicationContext());
-        rl = (RelativeLayout) findViewById(R.id.relativeLayout1);
-        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        rl = (LinearLayout) findViewById(R.id.relativeLayout1);
+        //lp.addRule(LinearLayout.CENTER_IN_PARENT);
         displayLoading("Loading...");
         // Get image
-        MyPicture myPicture = MyPicture.get();
         // Make modify image (kevin)
 
         Bitmap modifiedImage = null;
-        try {
-            modifiedImage = BitmapFactory.decodeStream(getAssets().open("blunt.png"));
-        }
-        catch (IOException e){
-        }
+//        try {
+        MyPicture mine = MyPicture.get();
+            modifiedImage = MyPicture.get().my_picture; //BitmapFactory.decodeStream(getAssets().open("blunt.png"));
+
+//        }
+//        catch (IOException e){
+//        }
         // Hide loading message
         hideLoading();
         // Display modified image
@@ -182,7 +191,10 @@ public class ViewActivity extends ActionBarActivity {
 
     void displayImage(Bitmap b){
         pictureView.setImageBitmap(b);
-        rl.addView(pictureView, lp);
+        pictureView.setRotation(90);
+        //pictureView.setLayoutParams(lp);
+
+        //rl.addView(pictureView, lp);
     }
 
     void hideImage(){

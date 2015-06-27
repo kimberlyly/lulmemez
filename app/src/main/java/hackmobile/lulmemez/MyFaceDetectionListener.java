@@ -33,8 +33,8 @@ class MyFaceDetectionListener implements Camera.FaceDetectionListener {
             coord.lowerRight[0] = face.rect.right;
             coord.lowerRight[1] = face.rect.bottom;
 
-            MyPicture mp = MyPicture.get();
-            mp.coords = coord;
+
+            MyPicture.get().coords = coord;
         }
     }
 }
