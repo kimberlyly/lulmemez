@@ -92,19 +92,30 @@ public class ViewActivity extends ActionBarActivity {
             matrix = new Matrix();
             matrix.postRotate(-90);
             hat = Bitmap.createBitmap(hat, 0, 0, hat.getWidth(), hat.getHeight(), matrix, true);
-            hat = Bitmap.createScaledBitmap(hat, hat.getWidth()/2 , hat.getHeight()/2, true);
+            hat = Bitmap.createScaledBitmap(hat, hat.getWidth() / 2, hat.getHeight() / 2, true);
 
             istr5 = assetManager.open("loominati.png");
             loominati = BitmapFactory.decodeStream(istr5);
 
             istr6 = assetManager.open("SnoopDogg.png");
             SnoopDogg = BitmapFactory.decodeStream(istr6);
+            SnoopDogg = BitmapFactory.decodeStream(istr4);
+            matrix = new Matrix();
+            matrix.postRotate(-90);
+            SnoopDogg = Bitmap.createBitmap(SnoopDogg, 0, 0, SnoopDogg.getWidth(), SnoopDogg.getHeight(), matrix, true);
+            SnoopDogg = Bitmap.createScaledBitmap(SnoopDogg, SnoopDogg.getWidth() / 2, SnoopDogg.getHeight() / 2, true);
 
             istr7 = assetManager.open("swag.png");
             swag = BitmapFactory.decodeStream(istr7);
 
             istr8 = assetManager.open("weed.png");
             weed = BitmapFactory.decodeStream(istr8);
+            weed = BitmapFactory.decodeStream(istr6);
+            weed = BitmapFactory.decodeStream(istr4);
+            matrix = new Matrix();
+            matrix.postRotate(-90);
+            weed = Bitmap.createBitmap(weed, 0, 0, weed.getWidth(), weed.getHeight(), matrix, true);
+            weed = Bitmap.createScaledBitmap(weed, weed.getWidth() / 2, weed.getHeight() / 2, true);
 
             istr9 = assetManager.open("yolo.png");
             yolo = BitmapFactory.decodeStream(istr9);
@@ -198,7 +209,8 @@ public class ViewActivity extends ActionBarActivity {
             canvas.drawBitmap(blunt, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 550 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2 + 150, paint);
             canvas.drawBitmap(glasses, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 350 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2, paint);
             canvas.drawBitmap(hat, -1 * (coords.upperLeft[1] + coords.lowerRight[1]) / 2 + 100 + (coords.upperLeft[1] + coords.lowerRight[1]) / 3, (coords.upperLeft[0] + coords.lowerRight[0]) / 2, paint);
-
+            canvas.drawBitmap(SnoopDogg, 750, 500, paint);
+            canvas.drawBitmap(weed, 0, 0, paint);
         }
 
 
